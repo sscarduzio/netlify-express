@@ -20,7 +20,8 @@ async function createDbIfNotPresent(connString, database) {
     }
 }
 
-async function initialize() {
+
+async function initialize(req,res,next) {
     if (db._initialized) {
         return
     }
@@ -38,6 +39,7 @@ async function initialize() {
         console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
+        throw error
     }
 
    // await sequelize.createSchema(getConfig().static.db_schema, {})
@@ -53,4 +55,5 @@ async function initialize() {
     db._initialized = true
     // sync all models with database
     await sequelize.sync();
+    next()
 }
