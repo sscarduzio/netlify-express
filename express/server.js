@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   res.end();
 });
 
-app.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
+router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
 
 router.get('/another', (req, res) => res.json({route: req.originalUrl}));
 router.post('/', (req, res) => res.json({postBody: req.body}));
