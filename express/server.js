@@ -4,6 +4,7 @@ const path = require('path');
 const serverless = require('serverless-http');
 const app = express();
 const bodyParser = require('body-parser');
+const db = require('./_helpers/db')
 
 const router = express.Router();
 router.get('/', (req, res) => {
@@ -11,6 +12,9 @@ router.get('/', (req, res) => {
   res.write('<h1>Hello from >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></h1>');
   res.end();
 });
+
+app.use('/accounts', require('./auth/accounts/accounts.controller'));
+
 router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
@@ -20,3 +24,10 @@ app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
 module.exports = app;
 module.exports.handler = serverless(app);
+
+(async function () {
+  console.log("Initializing resources on startup...")
+  await db.initialize()
+  console.log("Done initializing resources on startup!")
+})()
+
