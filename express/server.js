@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
+router.use('/api-docs', require('_helpers/swagger'));
 
 router.get('/another', (req, res) => res.json({route: req.originalUrl}));
 router.post('/', (req, res) => res.json({postBody: req.body}));
@@ -27,8 +28,8 @@ const app = express();
 app.use(cors({origin: (origin, callback) => callback(null, true), credentials: true}));
 app.use(bodyParser.json());
 app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.use('/', (req, res) => {
-  console.log("Serving index")
+app.use('/index.html', (req, res) => {
+  console.log("Serving index (only for local development, otherwise there is static files)")
   return res.sendFile(path.join(__dirname, '../index.html'));
 });
 
