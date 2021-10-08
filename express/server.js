@@ -17,8 +17,12 @@ router.get('/', (req, res) => {
   res.end();
 });
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
-router.use('/api-docs', require('_helpers/swagger'));
 
 router.get('/another', (req, res) => res.json({route: req.originalUrl}));
 router.post('/', (req, res) => res.json({postBody: req.body}));
