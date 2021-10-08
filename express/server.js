@@ -9,8 +9,10 @@ const db = require('./_helpers/db')
 const router = express.Router();
 router.get('/', (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<h1>Hello from >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></h1>');
-  res.end();
+  db.initialize().then(()=>{
+    res.write('<h1>Hello from >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></h1>');
+    res.end();
+  })
 });
 
 app.use('/accounts', require('./auth/accounts/accounts.controller'));
@@ -25,9 +27,5 @@ app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 module.exports = app;
 module.exports.handler = serverless(app);
 
-(async function () {
-  console.log("Initializing resources on startup...")
-  await db.initialize()
-  console.log("Done initializing resources on startup!")
-})()
+
 
