@@ -20,8 +20,9 @@ async function getAffiliations(req, res, next) {
         .catch(next);
 }
 
-function getAffiliationByID(req, res, next) {
-    affiliationService.getById(req.params.id)
-        .then(account => account ? res.json(account) : res.sendStatus(404))
+async function getAffiliationByID(req, res, next) {
+  const user = await accountService.getById(req.user.id)
+  affiliationService.getById(user.email)
+        .then(cust => cust ? res.json(cust) : res.sendStatus(404))
         .catch(next);
 }

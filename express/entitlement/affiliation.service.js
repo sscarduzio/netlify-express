@@ -21,10 +21,11 @@ module.exports = {
 async function getAllAffiliations(email) {
     const emailWrapped = `%${email}%`
     const customerIds = await db.Customer.sequelize.query(
-        `SELECT s_id, email, alt_email, s_plan_id
-         FROM active_subscribers_v
-         WHERE email ILIKE ?
-             OR alt_email ILIKE ?;`,
+        `SELECT s_id, email, alt_email, billing_address
+         FROM customers
+         WHERE s_id in (select s_id from subscriptions where status='active')
+         AND ( email ILIKE ?
+             OR alt_email ILIKE ?);`,
         {
             type: QueryTypes.SELECT,
             replacements: [emailWrapped, emailWrapped],
@@ -37,13 +38,13 @@ async function getAllAffiliations(email) {
 }
 
 async function getById(id) {
-    const customer = await db.Affiliation.findByPk(id);
+    const customer = await db.Customer.findByPk(id);
     return customer;
 }
 
 async function create(params) {
     // validate
-    if (await db.Aff.findOne({where: {email: params.email}})) {
+    if (await db.Customer.findOne({where: {email: params.email}})) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
