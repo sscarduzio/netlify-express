@@ -7,7 +7,7 @@ const Role = require('../../_helpers/role');
 const accountService = require('./account.service');
 
 // routes
-router.get('/', (req, res) => res.send("welcome to accounts"))
+router.get('/', (req, res) => res.send('<pre>Welcome to Accounts <API></API></pre>'))
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
@@ -26,8 +26,7 @@ module.exports = router;
 
 function authenticateSchema(req, res, next) {
   const schema = Joi.object({
-    email: Joi.string().required(),
-    password: Joi.string().required()
+    email: Joi.string().required(), password: Joi.string().required()
   });
   validateRequest(req, next, schema);
 }
@@ -234,8 +233,7 @@ function _delete(req, res, next) {
 function setTokenCookie(res, token) {
   // create cookie with refresh token that expires in 7 days
   const cookieOptions = {
-    httpOnly: true,
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    httpOnly: true, expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   };
   res.cookie('refreshToken', token, cookieOptions);
 }
