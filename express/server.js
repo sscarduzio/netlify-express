@@ -7,7 +7,7 @@ const db = require('./_helpers/db')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const router = express.Router();
-
+const configManager = require('./config-manager')
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(cookieParser());
@@ -31,7 +31,7 @@ app.disable('x-powered-by')
 
 app.use(cors({origin: (origin, callback) => callback(null, true), credentials: true}));
 app.use(bodyParser.json());
-app.use('/.netlify/functions/server', router);  // path must route through netlify lambda
+app.use(configManager.getConfig().static.api_base_path, router);  // path must route through netlify lambda
 
 module.exports = app;
 module.exports.handler = serverless(app);
