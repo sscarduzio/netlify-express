@@ -25,6 +25,7 @@ if (!process.env.IS_PROD) {
 router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
 
 router.get('/lol', (req, res) => res.json({route: req.originalUrl}));
+router.use(errorHandler);
 
 const app = express();
 app.disable('x-powered-by')
