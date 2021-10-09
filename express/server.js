@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const router = express.Router();
 const configManager = require('./config-manager')
-
+const errorHandler = require('./auth/_middleware/error-handler')
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(cookieParser());
 
@@ -28,6 +28,7 @@ router.get('/lol', (req, res) => res.json({route: req.originalUrl}));
 
 const app = express();
 app.disable('x-powered-by')
+app.use(errorHandler);
 
 app.use(cors({origin: (origin, callback) => callback(null, true), credentials: true}));
 app.use(bodyParser.json());
