@@ -23,7 +23,7 @@ async function createDbIfNotPresent(connString, database) {
 
 async function initialize(req,res,next) {
     if (db._initialized) {
-        return
+        return next()
     }
     console.log("Initializing DB...")
     const config = configManager.getConfig().database
