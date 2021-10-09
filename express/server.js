@@ -23,6 +23,7 @@ if (!process.env.IS_PROD) {
   router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
+router.use('/entitlement', db.initialize, require('./entitlement/controller'))
 
 router.get('/lol', (req, res) => res.json({route: req.originalUrl}));
 router.use(errorHandler);

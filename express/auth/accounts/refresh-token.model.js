@@ -23,7 +23,7 @@ function model(sequelize) {
     };
 
     const options = {
-        schema: configManager.getConfig().static.db_schema,
+        schema: configManager.getConfig().static.portal_schema,
         // disable default timestamp fields (createdAt and updatedAt)
         timestamps: false
     };

@@ -27,7 +27,7 @@ function model(sequelize) {
     const options = {
         // disable default timestamp fields (createdAt and updatedAt)
         timestamps: false,
-        schema: configManager.getConfig().static.db_schema,
+        schema: configManager.getConfig().static.portal_schema,
         defaultScope: {
             // exclude password hash by default
             attributes: { exclude: ['passwordHash'] }

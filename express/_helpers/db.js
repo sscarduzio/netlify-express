@@ -47,11 +47,10 @@ async function initialize(req,res,next) {
     // init models and add them to the exported db object
     db.Account = require('../auth/accounts/account.model')(sequelize);
     db.RefreshToken = require('../auth/accounts/refresh-token.model')(sequelize);
-   // db.Affiliation = require('../entitlement/affiliation.model')(sequelize)
+    db.Customer = require('../entitlement/customer.model')(sequelize)
     // define relationships
     db.Account.hasMany(db.RefreshToken, {onDelete: 'CASCADE'});
     db.RefreshToken.belongsTo(db.Account);
-  //  db.Affiliation.belongsTo(db.Account);
     db._initialized = true
     // sync all models with database
     await sequelize.sync();
