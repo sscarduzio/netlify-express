@@ -7,8 +7,7 @@ const db = require('./_helpers/db')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const router = express.Router();
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
+
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(cookieParser());
@@ -17,10 +16,12 @@ router.get('/', (req, res) => {
   res.send('<pre>Welcome to API root</pre>');
 });
 
-
-const swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+if(!process.env.IS_PROD) {
+  const swaggerUi = require('swagger-ui-express');
+  const YAML = require('yamljs');
+  const swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
+  router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 router.use('/accounts', db.initialize, require('./auth/accounts/accounts.controller'));
 
 router.get('/lol', (req, res) => res.json({route: req.originalUrl}));
