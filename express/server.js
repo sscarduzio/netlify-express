@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
   res.send('<pre>Welcome to API root</pre>');
 });
 
-if(!process.env.IS_PROD) {
+if (!process.env.IS_PROD) {
   const swaggerUi = require('swagger-ui-express');
   const YAML = require('yamljs');
   const swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
@@ -27,11 +27,11 @@ router.use('/accounts', db.initialize, require('./auth/accounts/accounts.control
 router.get('/lol', (req, res) => res.json({route: req.originalUrl}));
 
 const app = express();
+app.disable('x-powered-by')
+
 app.use(cors({origin: (origin, callback) => callback(null, true), credentials: true}));
 app.use(bodyParser.json());
 app.use('/.netlify/functions/server', router);  // path must route through netlify lambda
-app.use('/', express.static(path.join(__dirname, '../')));
-
 
 module.exports = app;
 module.exports.handler = serverless(app);
