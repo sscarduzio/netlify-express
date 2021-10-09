@@ -20,7 +20,7 @@ module.exports = {
 
 async function getAllAffiliations(email) {
     const emailWrapped = `%${email}%`
-    const customerIds = await db.Affiliation.sequelize.query(
+    const customerIds = await db.Customer.sequelize.query(
         `SELECT s_id, email, alt_email, s_plan_id
          FROM active_subscribers_v
          WHERE email ILIKE ?
